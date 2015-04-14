@@ -1,0 +1,10 @@
+Update freq. $\nu$ (s) 		&$27.646 \pm 22.147$ & $18.675$ & $-0.324$ \\ 
+Total time per user. $T$ (s)  &$4.071 \pm 1.190$ & $4.000$ & $-0.017$ \\ 
+Number of updates per user. $N_{points}$ (-) & $188.185 \pm 143.803$ & $124.000$ & $-0.341$ \\ 
+Number of Flights (-) & $61.251 \pm 39.284$ & $55.767$ & $-0.090$ \\ 
+Number of Stops (-)   & $13.259 \pm 7.787$ & $11.000$ & $-0.170$ \\ 
+Flight duration $\overline{\Delta t_f}$(s) &$10.815 \pm 5.618$ & $9.000$ & $-0.168$ \\ 
+Flight length $\Delta r_f$	(m)	 &$0.606 \pm 0.147$ & $0.604$ & $-0.003$ \\ 
+Flight velocity $line{v}$(m/s) 	 		&$37.167 \pm 11.120$ & $33.847$ & $-0.089$ \\ 
+Stop duration $\overline{\Delta t_s}$	(s) &$252.209 \pm 192.379$ & $246.385$ & $-0.023$ \\ 
+$59.391 \pm 16.693$ & $62.046$ & $0.045$ \\ 

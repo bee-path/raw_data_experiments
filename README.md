@@ -6,7 +6,10 @@ Raw data from experiments
 This folder contains the data from the experiments with human mobility carried out in the project [Beepath](http://bee-path.net/?lang=en).
 It currently contains two datasets:
 
-  - The raw data from the experiments: This dataset contains the raw data obtained during the experiment, with no filtering applied. File: *raw_data_festa_ciencia2012.sql*.
+  - The raw data from the experiments: This dataset contains the raw data obtained during the experiment with a previous filtering applied. File: *raw_data_festa_ciencia2012.sql*.
+		- Data has been anonymised.
+		- Control-testing users have been deleted.
+		- Data not corresponding to the dates of experiment or location inside the park has been deleted.
   - The filtered data used in reference [1]: This dataset contains the data fromwhich the analysis done in reference [1] is done, once a general filtering procedure has been applied. For details on the filtering and its contents, check out the SM of the reference. File: *filtered_data_festa_ciencia2012.sql*.
 
 For more details see the webpage of the project and the associated references.
@@ -27,4 +30,5 @@ See more at [OpenDataCommons](http://opendatacommons.org/licenses/odbl/#sthash.u
 
 ## Disclaimer
 
-The identities of the users in the database have been erased to preserve their privacy and cannot be identified under any circumstance.
+The identities of the users in the database have been erased to preserve their privacy and cannot be identified under any circumstance. Anyhow, if you participated in the experiment and no longer want your data to be available (even anonymized), please do let us know and we will delete it from the repository.
+
