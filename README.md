@@ -11,7 +11,7 @@ It currently contains two datasets from experiment being made in 2012. Full deta
 		- Data has been anonymised.
 		- Control-testing users have been deleted.
 		- Data not corresponding to the dates of experiment or location inside the park has been deleted.
-  - The filtered data used in reference [1](http://dx.doi.org/10.1098/rsos.160177): This dataset contains the data from which the analysis done in reference [1](http://dx.doi.org/10.1098/rsos.160177) is done, once a general filtering procedure has been applied. For details on the filtering and its contents, check out the SM of the reference. File: *filtered_data_festa_ciencia2012.sql*.
+  - The filtered data used in reference [1](http://dx.doi.org/10.1098/rsos.160177): This dataset contains the data from which the analysis done in reference [1](http://dx.doi.org/10.1098/rsos.160177) is done, once a general filtering procedure has been applied. For details on the filtering and its contents, check out the SM of the reference. File: *2016_cleaned_data.csv*.
   
 We have recently added a new dataset which contains the same experiment in the same location and the same context. Full details of the experiment are given in [Bee-Path](http://bee-path.net/?lang=en) website. We here provide:
 
