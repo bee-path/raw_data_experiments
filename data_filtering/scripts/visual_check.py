@@ -105,16 +105,17 @@ freq = np.array(tuple(np.mean(ffreq) for ffreq in freq))
 if latex:
 	with open('visual_check.log','w') as f:
 		print >>  f, "Update freq. $\\nu$ (s) 		&$%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (np.mean(freq),np.std(freq),np.median(freq),(np.median(freq)-np.mean(freq))/np.mean(freq))
-		print >>  f, "Total time per user. $T$ (s)  &$%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (data.T[-1].mean(), data.T[-1].std(),np.median(data.T[-1]),
+		print >>  f, "Average accuracy (m)  &$%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (data.T[-1].mean(), data.T[-1].std(),np.median(data.T[-1]),
 			(np.median(data.T[-1])-data.T[-1].mean())/data.T[-1].mean()) # average accuracy 
 		print >>  f, "Number of updates per user. $N_{points}$ (-) & $%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (np.mean(ups),np.std(ups),np.median(ups),(np.median(ups)-np.mean(ups))/np.mean(ups)) # average accuracy 
-		print >>  f, "Number of Flights (-) & $%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (np.mean(ts)/60.,np.std(ts)/60,np.median(ts)/60,(np.median(ts)-np.mean(ts))/np.mean(ts)) # average time per user
-		print >>  f, "Number of Stops (-)   & $%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (np.mean(fs),np.std(fs),np.median(fs),(np.median(fs)-np.mean(fs))/np.mean(fs))
-		print >>  f, "Flight duration $\overline{\Delta t_f}$(s) &$%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (np.mean(st),np.std(st),np.median(st),(np.median(st)-np.mean(st))/np.mean(st))
-		fl = np.array([t.v()[0] for t in tracs])
-		print >>  f, "Flight length $\Delta r_f$	(m)	 &$%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (np.mean(fl),np.std(fl),np.median(fl),(np.median(fl)-np.mean(fl))/np.mean(fl))
-		ftt = np.array([np.mean(tuple(t.iter_flights('Delta_r'))) for t in tracs])
+		print >> f, "Total time per user $T$ (minutes) & $%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " %  (np.mean(ts)/60.,np.std(ts)/60,np.median(ts)/60,(np.median(ts)-np.mean(ts))/np.mean(ts)) # average time per user
+		print >>  f, "Number of Flights (-) & $%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " % (np.mean(fs),np.std(fs),np.median(fs),(np.median(fs)-np.mean(fs))/np.mean(fs))		
+		print >>  f, "Number of Stops (-)   & $%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " % (np.mean(st),np.std(st),np.median(st),(np.median(st)-np.mean(st))/np.mean(st))
+		#print >>  f, "Flight duration $\overline{\Delta t_f}$(s) &$%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 
+		ftt = np.array([t.v()[0] for t in tracs])
 		print >>  f, "Flight velocity $line{v}$(m/s) 	 		&$%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (np.mean(ftt),np.std(ftt),np.median(ftt),(np.median(ftt)-np.mean(ftt))/np.mean(ftt))
+		fl = np.array([np.mean(tuple(t.iter_flights('Delta_r'))) for t in tracs])
+		print >>  f, "Flight length $\Delta r_f$	(m)	 &$%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (np.mean(fl),np.std(fl),np.median(fl),(np.median(fl)-np.mean(fl))/np.mean(fl))
 		stt = np.array([np.mean(tuple(t.iter_stops('Delta_t'))) for t in tracs])
 		print >>  f, "Stop duration $\overline{\Delta t_s}$	(s) &$%.3f \pm %.3f$ & $%.3f$ & $%.3f$ \\\ " 		% (np.mean(stt),np.std(stt),np.median(stt),(np.median(stt)-np.mean(stt))/np.mean(stt))
 		#gg = np.array([t.rgyr()[0] for t in tracs])
@@ -151,17 +152,25 @@ for po,t in enumerate(tracs):
                 superT.add_stop(s)
 
 ## long flights ##
+dict_tracs = dict(zip(ids,tracs))
+
+def time_start(fl,trac):
+	 mm = np.min([t[0][-1] for t in trac.iter_flights('StartEnd')])
+	 m  = np.max([t[-1][-1] for t in trac.iter_flights('StartEnd')])
+	 return mm,m-mm
+
 longs = []
 inf = []
 R_max = 60
 for f in superT.iter_flights():
     if f.Delta_r>R_max:
         longs.append(f)
-        inf.append([f.N_points,f.Delta_r,f.Delta_t,f.user])
+        inf.append([f.N_points,f.Delta_r,f.Delta_t,f.user,len(tuple(e for e in superT.iter_flights('user') if e==f.user)),
+        f.StartEnd[0][-1]-time_start(f,dict_tracs[f.user])[0],time_start(f,dict_tracs[f.user])[1]])
 
-np.savetxt('longflights.info',inf,header='#Flights larger than 60 mtrs: N_points in flight\tDelta_r\tDelta_t\tUser_id')
+np.savetxt('longflights.info',inf,header='#Flights larger than 60 mtrs: N_points in flight\tDelta_r\tDelta_t\tUser_id\tTotal_flights_user\tTime_after_1st_flight\tTotal_user_time')
 
-# a plot #
+# long flights plot #
 import pylab as pl
 xy = [bps.geometrics.rotate_xyt(f.UTM,np.pi/4.) for f in longs]
 pl.clf()
@@ -176,6 +185,23 @@ ax.set_ylabel('Rotated y [m]')
 ax.set_xlim(xmin=0,xmax=350)
 ax.set_ylim(ymin=0,ymax=150)
 pl.savefig('Long_flights.png')
+# save coords too #
+xyy = np.array([f.StartEnd for f in longs]).flatten().reshape(len(longs),6)
+
+np.savetxt('longflights.xy',xyy,header='# Flights larger than 60 mtrs: Start and ending point \n # Lon_start Lat_start Timestamp_start Lon_stop Lat_stop Timestamp_stop')
+
+# long flights CDF time #
+import ula_funcs as uf
+inff=np.array(inf)
+rel = inff.T[-2]/inff.T[-1]
+pl.clf()
+q = uf.stats.pdf(rel)
+pl.plot(q[-1][0],q[-1][-1],'o')
+pl.plot(q[-1][0],1.-q[-1][0],'--',color='k')
+pl.xlabel('Relative time from start of movement')
+pl.ylabel('CCDF')
+pl.savefig('Long_flights_time.png')
+
 
 # Example algorithm plot #
 def quickview(points,tracs,ang,path=None):
